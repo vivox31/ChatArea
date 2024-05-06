@@ -1,0 +1,43 @@
+@import '../../App.scss';
+.workarea{
+    flex: 0.7;
+    @include mobile{
+        flex:1
+    }
+}
+
+.welcome{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    flex: 0.7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  opacity: 0.6;
+    img{
+        height: 200px;
+        width: 200px;
+        // box-shadow: 2px 2px 2px black;
+    }
+}
+
+
+.CreateGroup{
+    flex: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background-color: white;
+    align-self: center;
+    border-radius: 50px;
+    height: 40px;
+    margin: 10px;
+    input{
+        border: none;
+        outline-width: 0;
+        font-size: 1.3rem;
+        margin-left: 10px;
+    }
+}

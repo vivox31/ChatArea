@@ -1,0 +1,68 @@
+@import '../App.scss';
+.sidebar{
+    flex:0.3;
+    display: flex;
+    flex-direction: column;
+    color: rgb(0, 0, 0,0.6);
+    @include mobile{
+        flex:0;
+    }
+    .header{
+        background-color: white;
+        border-radius: 20px;
+        padding: 10px 5px;
+        margin: 10px;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        @include mobile{
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            gap: 7%;
+            width: min-content;
+        }
+
+        .other-icons{
+            @include mobile{
+                height:50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+            }
+        }
+    }
+
+    .search{
+        background-color: white;
+        border-radius: 20px;
+        padding: 10px 5px;
+        margin: 10px;
+        display: flex;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        @include mobile{
+            display: none;
+        }
+
+        input{
+            border: none;
+            outline-width: 0;
+            font-size: 1.3rem;
+            margin-left: 10px;
+        }
+    }
+
+    .conversations{
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 10px 5px;
+        margin: 10px;
+        flex : 1;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        @include mobile{
+            display: none;
+        }
+    }
+}

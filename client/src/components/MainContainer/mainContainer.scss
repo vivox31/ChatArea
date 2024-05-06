@@ -1,0 +1,15 @@
+@import '../../App.scss';
+.main-container{
+    height: 90%;
+    width: 90%;
+    background-color: #f3f4f4;
+    border-radius: 20px;
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    @include mobile{
+        height: 100%;
+        width: 100%;
+       
+    }
+
+}

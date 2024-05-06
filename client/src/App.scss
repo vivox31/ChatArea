@@ -1,0 +1,19 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.App{
+background-color: #DDDEDD;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+
+}
+
+@mixin mobile{
+  @media (max-width:460px) {
+      @content;
+  }
+}

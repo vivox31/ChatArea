@@ -1,0 +1,104 @@
+@import '../../App.scss';
+.chatArea{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    @include mobile{
+        flex: 1;
+    }
+
+    .header{
+        // flex:1;
+        background-color: white;
+        border-radius: 20px;
+        padding: 10px 5px;
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .profile-img{
+            display: flex;
+            margin-left: 10px;
+            .person-info{
+                margin-left: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+        color: rgb(0, 0, 0,0.6);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .msg-container{
+        background-color: white;
+        border-radius: 20px;
+        padding: 10px 5px;
+        margin: 10px;
+        margin-top: 2px;
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        &::-webkit-scrollbar{
+            display: none
+        }
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    
+    .input-area{
+        // flex:1;
+        background-color: white;
+        border-radius: 20px;
+        padding: 10px 5px;
+        margin: 10px;
+        margin-top: 2px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+        
+    
+        
+        input{
+            border: none;
+            outline-width: 0;
+            font-size: 1.3rem;
+            margin-left: 10px;
+            color: rgb(0, 0, 0,0.8);
+        }
+        color: rgb(0, 0, 0,0.6);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+}
+
+.MessageSelf{
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    background-color: rgb(53, 235, 205);
+    padding: 10px;
+    border-radius: 20px 20px 0px 20px;
+    margin: 20px 10px;
+}
+
+.MessageOthers{
+    display: flex;
+    align-items: end;
+    
+    
+    .text{
+        align-self: flex-start;
+        display: flex;
+        width: fit-content;
+        flex-direction: column;
+        text-align: start;
+        background-color: rgb(231, 240, 238);
+        padding: 10px;
+        border-radius: 20px 20px 20px 0px;
+        margin: 20px 10px;
+    }
+}
