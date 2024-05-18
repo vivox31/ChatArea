@@ -1,19 +1,22 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import './ChatArea.scss'
 import { Avatar, IconButton } from '@mui/material'
-import { Add, AddAPhotoRounded, AddBoxOutlined, AddCircle, AddOutlined, DeleteOutline, EmojiEmotions, PlusOne, Send } from '@mui/icons-material'
+import { Add, AddAPhotoRounded, AddBoxOutlined, AddCircle, AddOutlined, AllInbox, DeleteOutline, EmojiEmotions, PlusOne, Send } from '@mui/icons-material'
 import MessageOthers from './MessageOthers'
 import MessageSelf from './MessageSelf'
-import axios from 'axios'
+import axios, { all } from 'axios'
 import {animate, motion, spring} from 'framer-motion'
 import { useParams } from "react-router-dom";
 import {io} from 'socket.io-client'
 import EmojiPicker from 'emoji-picker-react';
 import { red } from '@mui/material/colors'
+import { useSelector } from 'react-redux'
 const  ENDPOINT = 'http://localhost:3000'
 var socket;
 const ChatArea = () => {
 
+
+    //----------all usestates and variable declaration------------------------
     const userData = JSON.parse(localStorage.getItem('userData'))
     const [allmessages,setAllMessages] = useState([]);
     const [content , setContent] = useState('');
@@ -22,11 +25,48 @@ const ChatArea = () => {
     const [openemoji, setOpenemoji] = useState(false)
     const ref = useRef()
     const containerRef = useRef();
-
     const params = useParams();
     const [chatid, chatUser] = params._id.split('&');
+//----------------------------------------------------------------------------------------------
 
-   
+//-------------functions (for deleting chat and sending message)-------------------------------
+    const handleDeleteChat = async()=>{
+        try{
+            const res = await axios.delete(`http://localhost:8000/chat/${chatid}`,{
+                headers : {
+                    token : 'bearer ' + userData.accesstoken
+                }
+            })
+            console.log(res.data);
+
+            }catch{
+                console.log(error)
+        }
+    }
+
+    const sendMessage = async ()=>{
+        try {
+            const res =  await axios.post('http://localhost:8000/message/',{
+                content : content,
+                chatId : chatid
+            },{
+                headers : {
+                    token : "bearer " + userData.accesstoken
+                }
+            })
+            console.log(res.data);
+            setAllMessages([...allmessages,res.data]);
+            setContent('');
+            ref.current.value = "";
+            socket.emit('new message', res.data);
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+//----------------------------------------------------------------------------------------------  
+
+//---------all the useEffect functions----------------------------------------------------------
     useEffect(()=>{
 
          containerRef.current.Top = containerRef.current.scrollHeight;
@@ -54,41 +94,31 @@ const ChatArea = () => {
             }
         }
         fetchmessages();  
-       
+
+        // socket.on('message received', (newMessage) => {
+        //     setAllMessages([...allmessages,newMessage]);
+        // });
+        return () => {
+            socket.disconnect();
+        };
         
-    },[chatid, userData.accesstoken, setAllMessages])
+    },[chatid,userData.accesstoken,handleDeleteChat])
 
 
-    useEffect(()=>{
-        socket.on('message recieved',(newMessage)=>{
-          setAllMessages([...allmessages,newMessage])
-        })
+  useEffect(() => {
+        // console.log('loop')
+        socket.on('message recieved', (newMessage) => {
+            setAllMessages([...allmessages, newMessage])
+        });
+    });
 
-      },[])
+    useEffect(() => {
+        // Scroll to the bottom of the messages container when messages are updated
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }, [allmessages]);
       
- 
-    const sendMessage = async ()=>{
-        try {
-            const res =  await axios.post('http://localhost:8000/message/',{
-                content : content,
-                chatId : chatid
-            },{
-                headers : {
-                    token : "bearer " + userData.accesstoken
-                }
-            })
-            console.log(res.data);
-            setAllMessages([...allmessages,res.data]);
-            setContent('');
-            ref.current.value = "";
-            socket.emit('new message', res.data);
-            
-        } catch (error) {
-            console.log(error)
-        }
-    }
+//------------------------------------------------------------------------------------------------ 
 
-    
   return (
     <motion.div className='chatArea' >
         <div className="header">
@@ -99,7 +129,7 @@ const ChatArea = () => {
                 <span style={{fontSize:"0.8rem"}}> &nbsp; Online</span>
             </div>
             </div>
-            <IconButton style={{marginRight:'3%'}}><DeleteOutline /></IconButton>
+            <IconButton style={{marginRight:'3%'}}  onClick={(e)=>handleDeleteChat()} ><DeleteOutline /></IconButton>
                 
         </div>
         <div className="msg-container" ref={containerRef}>

@@ -3,7 +3,7 @@ const verify = require('./verifyToken');
 const router = express.Router();
 const Chat = require('../Models/chatModel')
 const User = require('../Models/userModel')
-
+const Message = require('../Models/messageModel')
 // for accessing a chat
 router.post('/', verify, async (req, res) => {
     const {userId} = req.body;
@@ -121,6 +121,20 @@ router.post('/addToGroup', verify, async (req, res) => {
         return res.status(201).json(added)
     }
 })
+
+router.delete('/:chatId',verify, async (req,res)=>{
+    let chatid = req.params.chatId;
+   try {
+    await Message.deleteMany({chat:chatid});
+    // message.save();
+    await Chat.findByIdAndDelete(chatid);
+    return res.json(201,'all messages and chat deleted successfullly')
+   } catch (error) {
+        console.log(err);
+        return res.json(400,err);
+   }
+    
+});
 
 module.exports = router
 
