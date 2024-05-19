@@ -9,8 +9,8 @@ import {animate, motion, spring} from 'framer-motion'
 import { useParams } from "react-router-dom";
 import {io} from 'socket.io-client'
 import EmojiPicker from 'emoji-picker-react';
-import { red } from '@mui/material/colors'
-import { useSelector } from 'react-redux'
+import { RefreshContext } from '../../refreshcontext/refreshContext'
+import { refreshApp } from '../../refreshcontext/action'
 const  ENDPOINT = 'http://localhost:3000'
 var socket;
 const ChatArea = () => {
@@ -21,12 +21,13 @@ const ChatArea = () => {
     const [allmessages,setAllMessages] = useState([]);
     const [content , setContent] = useState('');
     const [socketConnectionStatus, setSocketconnectionStatus] = useState(false)
-    // const [isNewMsg, setIsNewMsg] = useState(false)
     const [openemoji, setOpenemoji] = useState(false)
     const ref = useRef()
     const containerRef = useRef();
     const params = useParams();
     const [chatid, chatUser] = params._id.split('&');
+    const {refresh,triggerRefresh} = useContext(RefreshContext);
+
 //----------------------------------------------------------------------------------------------
 
 //-------------functions (for deleting chat and sending message)-------------------------------
@@ -38,8 +39,9 @@ const ChatArea = () => {
                 }
             })
             console.log(res.data);
+            triggerRefresh();
 
-            }catch{
+            }catch(error){
                 console.log(error)
         }
     }
@@ -59,6 +61,7 @@ const ChatArea = () => {
             setContent('');
             ref.current.value = "";
             socket.emit('new message', res.data);
+            triggerRefresh();
             
         } catch (error) {
             console.log(error)
@@ -108,7 +111,9 @@ const ChatArea = () => {
   useEffect(() => {
         // console.log('loop')
         socket.on('message recieved', (newMessage) => {
+            triggerRefresh();
             setAllMessages([...allmessages, newMessage])
+            
         });
     });
 

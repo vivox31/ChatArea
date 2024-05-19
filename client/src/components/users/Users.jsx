@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './users.scss'
 import { Avatar } from '@mui/material';
 import  axios  from 'axios';
+import { RefreshContext } from '../../refreshcontext/refreshContext';
+import { refreshApp } from '../../refreshcontext/action';
 const Users = () => {
     const [onlineUsers, setOnlineUsers] = useState([])
 
     const userData = JSON.parse(localStorage.getItem('userData'));
+    const {refresh,triggerRefresh} = useContext(RefreshContext)
   // console.log(userData)
   useEffect(()=>{
     const getUsers = async ()=>{
@@ -33,7 +36,8 @@ const Users = () => {
                 token : "bearer " + userData.accesstoken
             }
         })
-    console.log(res.data)
+    // console.log(res.data);
+    triggerRefresh();
     } catch (error) {
         console.log(error)
     }

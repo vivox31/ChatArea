@@ -2,15 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from 'react-redux';
-import { store } from '../state/reducers/store.js';
+import { RefreshContextProvider } from './refreshcontext/refreshContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}>
-    <BrowserRouter>
+    <RefreshContextProvider>
+    <BrowserRouter >
     <App />
-    </BrowserRouter>
-    </Provider>
+    </BrowserRouter  >
+    </RefreshContextProvider>
+
   </React.StrictMode>,
 )

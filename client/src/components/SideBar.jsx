@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './sidebar.scss'
 import { IconButton } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -10,10 +10,12 @@ import { Search } from '@mui/icons-material';
 import Conversation from './conversations/Conversation';
 import { Link, useNavigate } from 'react-router-dom';
  import axios from 'axios'
+import { RefreshContext } from '../refreshcontext/refreshContext';
 
 const SideBar = () => {
 
   const [conversations, setConversations] = useState([])
+  const {refresh,triggerRefresh} = useContext(RefreshContext);
 
   const userData = JSON.parse(localStorage.getItem('userData'))
 
@@ -33,7 +35,7 @@ const SideBar = () => {
     }
     }
     fetchChats();
-  },[])
+  },[refresh])
   const navigate = useNavigate();
 
   return (
